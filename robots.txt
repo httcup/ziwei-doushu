@@ -1,0 +1,7 @@
+User-Agent: *
+Allow: /
+Disallow: /api/
+Disallow: /preview-versions/
+
+Host: https://httcup.github.io/ziwei-doushu
+Sitemap: https://httcup.github.io/ziwei-doushu/sitemap.xml
