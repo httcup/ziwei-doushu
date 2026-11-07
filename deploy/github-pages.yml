@@ -1,0 +1,57 @@
+# 自动部署模板（GitHub Actions）
+#
+# 为什么放在这里而不是 .github/workflows/：
+#   推送 workflow 文件需要 Token 具备 workflow 权限，当前使用的 Token 只有 repo 权限。
+# 启用方式（任选其一）：
+#   1. 在 GitHub 网页新建文件 .github/workflows/deploy.yml，把下面内容整段贴进去并提交；
+#   2. 换一个带 workflow 权限的 Token 后执行：
+#        mv deploy/github-pages.yml .github/workflows/deploy.yml && git push
+#
+# 注意：本模板只负责 GitHub Pages；Cloudflare Pages 目前是直传部署（npm run deploy:cf），
+# 若想改由 CF 自己在 GitHub 上构建，需在 CF 控制台 Pages → 设置 → 构建与部署里连接该仓库。
+
+name: Deploy GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - name: Build
+        run: npm run build
+        env:
+          NEXT_PUBLIC_BASE_PATH: /ziwei-doushu
+          NEXT_PUBLIC_SITE_URL: https://httcup.github.io/ziwei-doushu
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
