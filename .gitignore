@@ -1,0 +1,12 @@
+node_modules/
+.next/
+.vercel/
+.env*
+!.env.example
+dist/
+*.tsbuildinfo
+.DS_Store
+node_modules
+
+# 构建产物（gh-pages 分支单独发布）
+out/
