@@ -7,8 +7,10 @@
 #   2. 换一个带 workflow 权限的 Token 后执行：
 #        mv deploy/github-pages.yml .github/workflows/deploy.yml && git push
 #
-# 注意：本模板只负责 GitHub Pages；Cloudflare Pages 目前是直传部署（npm run deploy:cf），
-# 若想改由 CF 自己在 GitHub 上构建，需在 CF 控制台 Pages → 设置 → 构建与部署里连接该仓库。
+# 注意：本模板只负责 GitHub Pages。
+# Cloudflare Pages 已通过控制台连接本仓库（Git 直连，push 到 main 自动构建，
+# 框架预设 Next.js Static HTML Export、构建命令 npx next build、输出目录 out），
+# 因此不需要在这里重复部署 CF；npm run deploy:cf 仅作为不走 Git 的应急直传手段。
 
 name: Deploy GitHub Pages
 
