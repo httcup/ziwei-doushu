@@ -4,7 +4,7 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-export NEXT_PUBLIC_SITE_URL=https://ziwei-doushu-208.pages.dev
+export NEXT_PUBLIC_SITE_URL=https://ziwei.139t.cn
 
 npm run build
 
@@ -13,4 +13,4 @@ npx wrangler pages deploy out \
   --branch main \
   --commit-dirty=true
 
-echo "✅ 已发布：https://ziwei-doushu-208.pages.dev/"
+echo "✅ 已发布：https://ziwei.139t.cn/"
